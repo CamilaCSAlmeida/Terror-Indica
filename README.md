@@ -110,7 +110,9 @@ A ideia é criar:
 
 ## 🧛 Autor
 
-Desenvolvido por você 🩸
+
+Desenvolvido por Camila CS Almeida 🩸
+
 
 ---
 

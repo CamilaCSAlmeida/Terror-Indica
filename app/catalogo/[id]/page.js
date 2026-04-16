@@ -72,27 +72,38 @@ export default function Detalhes() {
 
       {/* ESTILO DO BOTÃO */}
       <style jsx>{`
-        .back-btn {
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          padding: 10px 16px;
-          background: transparent;
-          color: red;
-          border: 2px solid red;
-          font-weight: bold;
-          cursor: pointer;
-          letter-spacing: 1px;
-          text-shadow: 0 0 8px red;
-          transition: all 0.3s ease;
-        }
+         .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 16px;
+    background: transparent;
+    color: red;
+    border: 2px solid red;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px red;
+    transition: all 0.3s ease;
+  }
 
-        .back-btn:hover {
-          background: red;
-          color: black;
-          box-shadow: 0 0 20px red;
-          transform: scale(1.1);
-        }
+  .back-btn:hover {
+    background: red;
+    color: black;
+    box-shadow: 0 0 20px red;
+    transform: scale(1.1);
+  }
+
+  /* 📱 AJUSTE PARA CELULAR */
+  @media (max-width: 600px) {
+    .back-btn {
+      top: 10px;
+      left: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-width: 1px;
+    }
+  }
       `}</style>
 
     </main>
