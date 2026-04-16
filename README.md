@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👻 Terror Indica
 
-## Getting Started
+> "Você ousa entrar? Aqui, cada filme e livro pode ser seu pior pesadelo..."
 
-First, run the development server:
+---
+
+## 🩸 Sobre o projeto
+
+**Terror Indica** é um site interativo desenvolvido com **Next.js**, criado para recomendar filmes e livros de terror de forma imersiva.
+
+Prepare-se para:
+
+* 🎬 Descobrir clássicos do terror
+* 📚 Explorar livros sombrios
+* 🎧 Ouvir uma trilha assustadora enquanto navega
+* 💀 Entrar em uma experiência temática completa
+
+---
+
+## 🧠 Tecnologias utilizadas
+
+* ⚡ Next.js
+* ⚛️ React
+* 🎨 CSS (customizado)
+* 🌐 Vercel (deploy)
+
+---
+
+## 🎥 Funcionalidades
+
+* 🏠 Página inicial com atmosfera de terror
+* 📖 Catálogo dividido entre filmes e livros
+* 🔍 Página de detalhes com sinopse
+* 🔗 Navegação dinâmica entre páginas
+* 🎧 Trilha sonora de fundo
+* ⬅️ Botões de navegação estilizados
+
+---
+
+## 🕯️ Catálogo
+
+### 🎬 Filmes
+
+* O Exorcista
+* Hereditário
+* A Bruxa
+
+### 📚 Livros
+
+* Drácula
+* O Iluminado
+* O Chamado de Cthulhu
+
+---
+
+## 🧪 Como rodar o projeto
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra no navegador:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ☁️ Deploy
 
-To learn more about Next.js, take a look at the following resources:
+O projeto está hospedado na Vercel.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Sempre que houver atualização:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+git add .
+git commit -m "update"
+git push
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Estrutura do projeto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+/app
+  page.tsx
+  /catalogo
+  /catalogo/[id]
+/components
+  AudioPlayer.js
+/public
+  /assets
+  /audio
+```
+
+---
+
+## 😈 Experiência
+
+Este projeto foi pensado para ir além de um simples catálogo.
+
+A ideia é criar:
+
+> Uma experiência sensorial — visual e sonora — que envolva o usuário no universo do terror.
+
+---
+
+## 🧛 Autor
+
+Desenvolvido por você 🩸
+
+---
+
+## ⚰️ Aviso final
+
+Se algo estranho acontecer enquanto você navega...
+
+**não é bug.** 👀
