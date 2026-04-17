@@ -7,6 +7,13 @@ export default function Home() {
   return (
     <main style={styles.container}>
       
+      {/* 🔐 BOTÃO LOGIN NO TOPO */}
+      <Link href="/login">
+        <button className="login-top-btn">
+          Login
+        </button>
+      </Link>
+
       {/* Overlay escuro */}
       <div style={styles.overlay}></div>
 
@@ -18,16 +25,38 @@ export default function Home() {
           Você ousa entrar? 👻 Aqui, cada filme e livro pode ser seu pior pesadelo...
         </p>
 
-        {/* BOTÃO */}
         <Link href="/catalogo">
-          <button style={styles.button} className="terror-btn">
+          <button className="terror-btn">
             Entrar no catálogo
           </button>
         </Link>
       </div>
 
-      {/* Estilos da animação */}
+      {/* ESTILOS */}
       <style jsx>{`
+        /* 🔐 BOTÃO TOPO */
+        .login-top-btn {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          padding: 8px 16px;
+          background: transparent;
+          color: white;
+          border: 2px solid white;
+          font-weight: bold;
+          cursor: pointer;
+          letter-spacing: 1px;
+          transition: all 0.3s ease;
+          z-index: 2;
+        }
+
+        .login-top-btn:hover {
+          background: white;
+          color: black;
+          box-shadow: 0 0 15px white;
+        }
+
+        /* 🎬 BOTÃO PRINCIPAL */
         .terror-btn {
           margin-top: 30px;
           padding: 14px 28px;
@@ -55,6 +84,16 @@ export default function Home() {
           }
           20%, 24%, 55% {
             opacity: 0.4;
+          }
+        }
+
+        /* 📱 RESPONSIVO */
+        @media (max-width: 600px) {
+          .login-top-btn {
+            top: 10px;
+            right: 10px;
+            padding: 6px 10px;
+            font-size: 12px;
           }
         }
       `}</style>
@@ -99,9 +138,5 @@ const styles: { [key: string]: CSSProperties } = {
     fontSize: "1.5rem",
     maxWidth: "600px",
     textShadow: "0 0 10px black",
-  },
-
-  button: {
-    borderRadius: "8px",
   },
 };

@@ -51,7 +51,7 @@ export default function Login() {
       if (modo === "login") {
         await signInWithEmailAndPassword(auth, email, senha);
 
-        // 🚀 REDIRECIONA
+        // 🚀 redireciona APÓS login
         router.push("/catalogo");
 
       } else {
@@ -72,63 +72,51 @@ export default function Login() {
     <main style={styles.container} onMouseMove={handleMouseMove}>
       
       {/* 👻 FANTASMA */}
-      <div
-        style={{
-          transform: `translate(${ghostPos.x}px, ${ghostPos.y}px)`,
-          transition: "transform 0.3s ease-out",
-          marginBottom: "50px",
-        }}
-      >
+      <div style={{ transform: `translate(${ghostPos.x}px, ${ghostPos.y}px)`, marginBottom: "50px" }}>
         <svg width="180" height="200" viewBox="0 0 200 220">
-          <defs>
-            <radialGradient id="bodyGrad" cx="50%" cy="30%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="60%" stopColor="#e6e6e6" />
-              <stop offset="100%" stopColor="#cfcfcf" />
-            </radialGradient>
-          </defs>
 
-          <path
-            d="
-              M100 10
-              C140 10, 180 40, 180 90
-              L180 150
-              C180 180, 150 200, 130 180
-              C120 200, 100 180, 90 200
-              C70 180, 50 200, 40 180
-              C20 200, 20 170, 20 150
-              L20 90
-              C20 40, 60 10, 100 10
-              Z
-            "
-            fill="url(#bodyGrad)"
-            style={{ filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.6))" }}
-          />
+  {/* 👻 CORPO DO FANTASMA */}
+  <path
+    d="
+      M100 10
+      C140 10, 180 40, 180 90
+      L180 150
+      C180 180, 150 200, 130 180
+      C120 200, 100 180, 90 200
+      C70 180, 50 200, 40 180
+      C20 200, 20 170, 20 150
+      L20 90
+      C20 40, 60 10, 100 10
+      Z
+    "
+    fill="#f5f5f5"
+    stroke="#ccc"
+    strokeWidth="2"
+  />
 
-          <circle cx="70" cy="90" r="20" fill="#111" />
-          <circle cx="130" cy="90" r="20" fill="#111" />
+  {/* 👁️ OLHOS */}
+  <circle cx="70" cy="90" r="20" fill="#111" />
+  <circle cx="130" cy="90" r="20" fill="#111" />
 
-          <circle cx={70 + eyePos.x} cy={90 + eyePos.y} r="7" fill="white" />
-          <circle cx={130 + eyePos.x} cy={90 + eyePos.y} r="7" fill="white" />
+  {/* 👁️ PUPILAS */}
+  <circle cx={70 + eyePos.x} cy={90 + eyePos.y} r="7" fill="white" />
+  <circle cx={130 + eyePos.x} cy={90 + eyePos.y} r="7" fill="white" />
 
-          <circle cx="65" cy="85" r="5" fill="white" opacity="0.8" />
-          <circle cx="125" cy="85" r="5" fill="white" opacity="0.8" />
+  {/* 😮 BOCA */}
+  <ellipse
+    cx="100"
+    cy="140"
+    rx={focus === "senha" ? 10 : 20}
+    ry={focus === "senha" ? 14 : 6}
+    fill="#111"
 
-          <ellipse
-            cx="100"
-            cy="140"
-            rx={focus === "senha" ? 10 : 20}
-            ry={focus === "senha" ? 14 : 6}
-            fill="#111"
-          />
-        </svg>
+  />
+</svg>
       </div>
 
       {/* 🔐 FORM */}
       <div style={styles.form}>
-        <h2>
-          {modo === "login" ? "Login do Terror" : "Criar Conta"}
-        </h2>
+        <h2>{modo === "login" ? "Login do Terror" : "Criar Conta"}</h2>
 
         <input
           type="email"
@@ -156,10 +144,7 @@ export default function Login() {
 
         <p
           style={styles.link}
-          onClick={() => {
-            setModo(modo === "login" ? "cadastro" : "login");
-            setFocus(null);
-          }}
+          onClick={() => setModo(modo === "login" ? "cadastro" : "login")}
         >
           {modo === "login"
             ? "Não tem conta? Criar cadastro"
