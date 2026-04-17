@@ -1,19 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
 } from "firebase/auth";
+
 import { auth } from "../../lib/firebase";
 
 export default function Login() {
+  const router = useRouter();
+
   const [focus, setFocus] = useState<"email" | "senha" | null>(null);
   const [modo, setModo] = useState<"login" | "cadastro">("login");
+
   const [eyePos, setEyePos] = useState({ x: 0, y: 0 });
   const [ghostPos, setGhostPos] = useState({ x: 0, y: 0 });
 
-  // ✅ estados do login
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -41,15 +46,22 @@ export default function Login() {
     }
   }
 
-  // ✅ FUNÇÃO CORRETA (AGORA EXISTE)
   async function handleAuth() {
     try {
       if (modo === "login") {
         await signInWithEmailAndPassword(auth, email, senha);
-        alert("Login realizado!");
+
+        // 🚀 REDIRECIONA
+        router.push("/catalogo");
+
       } else {
         await createUserWithEmailAndPassword(auth, email, senha);
-        alert("Conta criada!");
+
+        alert("Conta criada! Faça login.");
+
+        setModo("login");
+        setEmail("");
+        setSenha("");
       }
     } catch (error: any) {
       alert(error.message);
@@ -90,9 +102,7 @@ export default function Login() {
               Z
             "
             fill="url(#bodyGrad)"
-            style={{
-              filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.6))"
-            }}
+            style={{ filter: "drop-shadow(0 10px 25px rgba(0,0,0,0.6))" }}
           />
 
           <circle cx="70" cy="90" r="20" fill="#111" />
@@ -139,14 +149,6 @@ export default function Login() {
           onBlur={() => setFocus(null)}
           style={styles.input}
         />
-
-        {modo === "cadastro" && (
-          <input
-            type="password"
-            placeholder="Confirmar senha"
-            style={styles.input}
-          />
-        )}
 
         <button style={styles.button} onClick={handleAuth}>
           {modo === "login" ? "Entrar" : "Cadastrar"}
