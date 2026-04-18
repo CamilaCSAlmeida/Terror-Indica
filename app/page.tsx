@@ -1,20 +1,50 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  async function handleLogout() {
+    await signOut(auth);
+  }
+
   return (
     <main style={styles.container}>
       
-      {/* 🔐 BOTÃO LOGIN NO TOPO */}
-      <Link href="/login">
-        <button className="login-top-btn">
-          Login
-        </button>
-      </Link>
+      {/* 🔐 TOPO DIREITO */}
+      <div className="top-right">
+        {user ? (
+          <>
+            <span className="user-email">
+              {user.email}
+            </span>
 
-      {/* Overlay escuro */}
+            <button className="logout-btn" onClick={handleLogout}>
+              Sair
+            </button>
+          </>
+        ) : (
+          <Link href="/login">
+            <button className="login-top-btn">
+              Login
+            </button>
+          </Link>
+        )}
+      </div>
+
+      {/* Overlay */}
       <div style={styles.overlay}></div>
 
       {/* Conteúdo */}
@@ -34,29 +64,50 @@ export default function Home() {
 
       {/* ESTILOS */}
       <style jsx>{`
-        /* 🔐 BOTÃO TOPO */
-        .login-top-btn {
+        .top-right {
           position: absolute;
           top: 20px;
           right: 20px;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          z-index: 2;
+        }
+
+        .login-top-btn {
           padding: 8px 16px;
           background: transparent;
           color: white;
           border: 2px solid white;
           font-weight: bold;
           cursor: pointer;
-          letter-spacing: 1px;
-          transition: all 0.3s ease;
-          z-index: 2;
+          transition: 0.3s;
         }
 
         .login-top-btn:hover {
           background: white;
           color: black;
-          box-shadow: 0 0 15px white;
         }
 
-        /* 🎬 BOTÃO PRINCIPAL */
+        .logout-btn {
+          padding: 6px 12px;
+          background: red;
+          color: black;
+          border: none;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .logout-btn:hover {
+          background: white;
+          color: black;
+        }
+
+        .user-email {
+          font-size: 12px;
+          color: #ccc;
+        }
+
         .terror-btn {
           margin-top: 30px;
           padding: 14px 28px;
@@ -66,8 +117,6 @@ export default function Home() {
           color: red;
           border: 2px solid red;
           cursor: pointer;
-          letter-spacing: 1px;
-          transition: all 0.3s ease;
           animation: flicker 2s infinite;
         }
 
@@ -79,21 +128,18 @@ export default function Home() {
         }
 
         @keyframes flicker {
-          0%, 18%, 22%, 25%, 53%, 57%, 100% {
-            opacity: 1;
-          }
-          20%, 24%, 55% {
-            opacity: 0.4;
-          }
+          0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+          20%, 24%, 55% { opacity: 0.4; }
         }
 
-        /* 📱 RESPONSIVO */
         @media (max-width: 600px) {
-          .login-top-btn {
+          .top-right {
             top: 10px;
             right: 10px;
-            padding: 6px 10px;
-            font-size: 12px;
+          }
+
+          .user-email {
+            display: none;
           }
         }
       `}</style>
