@@ -2,64 +2,91 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 
+import {
+  doc,
+  setDoc,
+  deleteDoc,
+  getDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+
+import { db } from "../../lib/firebase";
+
 export default function Catalogo() {
   const router = useRouter();
+
+  const [favoritos, setFavoritos] = useState([]);
 
   // 🔐 proteção de rota
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         router.push("/login");
+      } else {
+        loadFavoritos(user.uid);
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
+
+  // 🔄 carregar favoritos
+  async function loadFavoritos(uid) {
+    const snapshot = await getDocs(collection(db, "favoritos"));
+
+    const favs = [];
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.userId === uid) {
+        favs.push(data.itemId);
+      }
+    });
+
+    setFavoritos(favs);
+  }
+
+  // ❤️ favoritar / desfavoritar
+  async function toggleFavorito(id) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const ref = doc(db, "favoritos", `${user.uid}_${id}`);
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+      await deleteDoc(ref);
+      setFavoritos((prev) => prev.filter((f) => f !== id));
+    } else {
+      await setDoc(ref, {
+        userId: user.uid,
+        itemId: id,
+      });
+      setFavoritos((prev) => [...prev, id]);
+    }
+  }
 
   const filmes = [
-    {
-      id: "o-exorcista",
-      titulo: "O Exorcista",
-      imagem: "/assets/o-exorcista.png",
-    },
-    {
-      id: "hereditario",
-      titulo: "Hereditário",
-      imagem: "/assets/hereditario.png",
-    },
-    {
-      id: "a-bruxa",
-      titulo: "A Bruxa",
-      imagem: "/assets/a-bruxa.png",
-    },
+    { id: "o-exorcista", titulo: "O Exorcista", imagem: "/assets/o-exorcista.png" },
+    { id: "hereditario", titulo: "Hereditário", imagem: "/assets/hereditario.png" },
+    { id: "a-bruxa", titulo: "A Bruxa", imagem: "/assets/a-bruxa.png" },
   ];
 
   const livros = [
-    {
-      id: "dracula",
-      titulo: "Drácula",
-      imagem: "/assets/dracula.png",
-    },
-    {
-      id: "o-iluminado",
-      titulo: "O Iluminado",
-      imagem: "/assets/o-iluminado.png",
-    },
-    {
-      id: "cthulhu",
-      titulo: "O Chamado de Cthulhu",
-      imagem: "/assets/o-chamado-de-cthulhu.png",
-    },
+    { id: "dracula", titulo: "Drácula", imagem: "/assets/dracula.png" },
+    { id: "o-iluminado", titulo: "O Iluminado", imagem: "/assets/o-iluminado.png" },
+    { id: "cthulhu", titulo: "O Chamado de Cthulhu", imagem: "/assets/o-chamado-de-cthulhu.png" },
   ];
 
   return (
     <main style={styles.container}>
-      {/* BOTÃO VOLTAR */}
       <Link href="/">
         <button className="back-btn">← Voltar ao início</button>
       </Link>
@@ -80,7 +107,18 @@ export default function Catalogo() {
                   height={300}
                   style={styles.image}
                 />
+
                 <p style={styles.text}>{item.titulo}</p>
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleFavorito(item.id);
+                  }}
+                  className="fav-btn"
+                >
+                  {favoritos.includes(item.id) ? "❤️" : "🤍"}
+                </button>
               </div>
             </Link>
           ))}
@@ -101,14 +139,24 @@ export default function Catalogo() {
                   height={300}
                   style={styles.image}
                 />
+
                 <p style={styles.text}>{item.titulo}</p>
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleFavorito(item.id);
+                  }}
+                  className="fav-btn"
+                >
+                  {favoritos.includes(item.id) ? "❤️" : "🤍"}
+                </button>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ESTILO */}
       <style jsx>{`
         .back-btn {
           position: absolute;
@@ -120,16 +168,19 @@ export default function Catalogo() {
           border: 2px solid red;
           font-weight: bold;
           cursor: pointer;
-          letter-spacing: 1px;
-          text-shadow: 0 0 8px red;
-          transition: all 0.3s ease;
         }
 
-        .back-btn:hover {
-          background: red;
-          color: black;
-          box-shadow: 0 0 20px red;
-          transform: scale(1.1);
+        .fav-btn {
+          margin-top: 10px;
+          background: transparent;
+          border: none;
+          font-size: 22px;
+          cursor: pointer;
+          transition: 0.2s;
+        }
+
+        .fav-btn:hover {
+          transform: scale(1.3);
         }
 
         @media (max-width: 600px) {
@@ -138,7 +189,6 @@ export default function Catalogo() {
             left: 10px;
             padding: 6px 10px;
             font-size: 12px;
-            border-width: 1px;
           }
         }
       `}</style>
@@ -180,7 +230,6 @@ const styles = {
     padding: "10px",
     borderRadius: "10px",
     width: "200px",
-    transition: "0.3s",
     cursor: "pointer",
   },
 
